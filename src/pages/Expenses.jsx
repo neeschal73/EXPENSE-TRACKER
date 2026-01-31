@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { ExpenseContext } from '../App';
 import './Expenses.css';
+import { Link } from 'react-router-dom';
 
 function Expenses() {
   const [sortBy, setSortBy] = useState('name');
@@ -58,22 +59,27 @@ function Expenses() {
           </div>
           <div className="expenses-grid">
             {sortedProducts.map((product) => (
-              <div key={product.id} className="expense-card">
-                <img src={product.thumbnail} alt={product.title} className="expense-image" />
-                <div className="expense-content">
-                  <h3>{product.title}</h3>
-                  <p className="category">{product.category}</p>
-                  <p className="description">{product.description}</p>
-                  <div className="expense-footer">
-                    <div className="price">${product.price.toFixed(2)}</div>
-                    <div className="rating">⭐ {product.rating.toFixed(1)}</div>
+              <Link key={product.id} to={`/expenses/${product.id}`} className="expense-card-link">
+                <div className="expense-card">
+                  <div className="media-wrap">
+                    <img src={product.thumbnail || product.images?.[0]} alt={product.title} className="expense-image" loading="lazy" />
                   </div>
-                  <div className="discount">
-                    <span>Stock: {product.stock}</span>
-                    <span className="discount-percent">-{product.discountPercentage}%</span>
+                  <div className="expense-content">
+                    <h3 className="title">{product.title}</h3>
+                    <p className="category">{product.category}</p>
+                    <p className="description">{product.description}</p>
+                    <div className="expense-footer">
+                      <div className="price">${product.price.toFixed(2)}</div>
+                      <div className="rating">⭐ {product.rating.toFixed(1)}</div>
+                    </div>
+                    <div className="discount">
+                      <span>Stock: {product.stock}</span>
+                      <span className="discount-percent">-{product.discountPercentage}%</span>
+                    </div>
+                    <div className="card-cta">View details →</div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </>

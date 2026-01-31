@@ -5,6 +5,8 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Expenses from './pages/Expenses';
 import ProductDetail from './pages/ProductDetail';
+import Transactions from './pages/Transactions';
+import Login from './pages/Login';
 import Summary from './pages/Summary';
 import About from './pages/About';
 import './App.css';
@@ -12,59 +14,119 @@ import './App.css';
 export const ExpenseContext = createContext(null);
 
 function App() {
+  // API products (kept for reference)
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [productsError, setProductsError] = useState(null);
 
   const API_URL = 'https://dummyjson.com/products';
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
+      setLoadingProducts(true);
       const response = await axios.get(API_URL);
       setProducts(response.data?.products || []);
-      setError(null);
+      setProductsError(null);
     } catch (err) {
       console.error('Error fetching products:', err);
-      setError('Failed to load products.');
+      setProductsError('Failed to load products.');
       setProducts([]);
     } finally {
-      setLoading(false);
+      setLoadingProducts(false);
     }
   };
 
+  useEffect(() => { fetchProducts(); }, []);
+
+  // Authentication (very simple for demo)
+  const [user, setUser] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('et_user')) || null; } catch { return null; }
+  });
+
+  const login = (username) => {
+    const u = { name: username };
+    setUser(u);
+    localStorage.setItem('et_user', JSON.stringify(u));
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('et_user');
+  };
+
+  // Transactions (user-managed) stored in localStorage per user
+  const storageKey = user ? `et_txns_${user.name}` : 'et_txns_guest';
+  const [transactions, setTransactions] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(storageKey)) || []; } catch { return []; }
+  });
+
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    try { localStorage.setItem(storageKey, JSON.stringify(transactions)); } catch {}
+  }, [storageKey, transactions]);
 
-  const calculateTotalExpense = (items = products) => {
-    return items.reduce((total, product) => total + (Number(product.price) || 0), 0);
+  useEffect(() => {
+    try {
+      const tx = JSON.parse(localStorage.getItem(storageKey)) || [];
+      setTransactions(tx);
+    } catch { setTransactions([]); }
+  }, [user]);
+
+  const addTransaction = (tx) => {
+    const newTx = { ...tx, id: Date.now() };
+    setTransactions((s) => [newTx, ...s]);
+    return newTx;
   };
 
-  const calculateAverageExpense = (items = products) => {
-    if (!items || items.length === 0) return 0;
-    return calculateTotalExpense(items) / items.length;
+  const editTransaction = (id, updates) => {
+    setTransactions((s) => s.map(t => t.id === id ? { ...t, ...updates } : t));
   };
 
-  const getHighestExpense = (items = products) => {
-    if (!items || items.length === 0) return null;
-    return items.reduce((max, product) => (product.price > max.price ? product : max), items[0]);
+  const deleteTransaction = (id) => {
+    setTransactions((s) => s.filter(t => t.id !== id));
   };
 
-  const getLowestExpense = (items = products) => {
-    if (!items || items.length === 0) return null;
-    return items.reduce((min, product) => (product.price < min.price ? product : min), items[0]);
+  // Calculations
+  const totalIncome = (items = transactions) => items.filter(i=>i.type==='income').reduce((sum,i)=>sum+Number(i.amount||0),0);
+  const totalExpense = (items = transactions) => items.filter(i=>i.type==='expense').reduce((sum,i)=>sum+Number(i.amount||0),0);
+  const currentBalance = () => totalIncome() - totalExpense();
+
+  const monthlyTotal = (year, month) => {
+    const start = new Date(year, month, 1);
+    const end = new Date(year, month+1, 1);
+    return transactions.filter(t=>{
+      const d = new Date(t.date);
+      return d >= start && d < end && t.type==='expense';
+    }).reduce((s,t)=>s+Number(t.amount||0),0);
+  };
+
+  const categoryTotals = (items = transactions) => {
+    return items.reduce((acc, t) => {
+      const key = t.category || 'Other';
+      acc[key] = (acc[key] || 0) + Number(t.amount || 0) * (t.type === 'expense' ? 1 : 0);
+      return acc;
+    }, {});
   };
 
   const contextValue = {
+    // API products
     products,
-    loading,
-    error,
-    refetch: fetchProducts,
-    calculateTotalExpense,
-    calculateAverageExpense,
-    getHighestExpense,
-    getLowestExpense,
+    loadingProducts,
+    productsError,
+    refetchProducts: fetchProducts,
+    // auth
+    user,
+    login,
+    logout,
+    // transactions
+    transactions,
+    addTransaction,
+    editTransaction,
+    deleteTransaction,
+    totalIncome,
+    totalExpense,
+    currentBalance,
+    monthlyTotal,
+    categoryTotals,
   };
 
   return (
@@ -75,8 +137,10 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/expenses" element={<Expenses />} />
               <Route path="/expenses/:id" element={<ProductDetail />} />
+              <Route path="/transactions" element={<Transactions />} />
               <Route path="/summary" element={<Summary />} />
               <Route path="/about" element={<About />} />
             </Routes>

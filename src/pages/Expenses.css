@@ -73,6 +73,18 @@
   object-fit: cover;
 }
 
+.expense-card-link { text-decoration: none; color: inherit; }
+
+.media-wrap { overflow: hidden; border-bottom: 1px solid #f1f1f1; }
+
+.title { font-size: 18px; color: #222; margin-bottom: 6px; }
+
+.card-cta {
+  margin-top: 12px;
+  font-weight: 700;
+  color: #3a3aeb;
+}
+
 .expense-content {
   padding: 20px;
   flex: 1;

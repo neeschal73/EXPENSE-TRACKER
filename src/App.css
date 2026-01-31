@@ -55,6 +55,8 @@ body {
   text-align: center;
 }
 
+.container { max-width: 1100px; margin: 0 auto; }
+
 .subheading {
   color: #666;
   margin-bottom: 20px;
