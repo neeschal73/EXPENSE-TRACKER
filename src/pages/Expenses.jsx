@@ -1,32 +1,14 @@
-import { useState, useEffect } from 'react';
-import { fetchProducts } from '../services/expenseService';
+import { useState, useContext } from 'react';
+import { ExpenseContext } from '../App';
 import './Expenses.css';
 
 function Expenses() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchProducts();
-        setProducts(data);
-      } catch (err) {
-        setError('Failed to load expenses. Please try again later.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { products: ctxProducts, loading: ctxLoading, error: ctxError } = useContext(ExpenseContext);
 
-    loadProducts();
-  }, []);
-
-  const filteredProducts = products.filter(product =>
+  const filteredProducts = (ctxProducts || []).filter(product =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -44,8 +26,8 @@ function Expenses() {
     return 0;
   });
 
-  if (loading) return <div className="loading">Loading expenses...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (ctxLoading) return <div className="loading">Loading expenses...</div>;
+  if (ctxError) return <div className="error">{ctxError}</div>;
 
   return (
     <div className="container">
