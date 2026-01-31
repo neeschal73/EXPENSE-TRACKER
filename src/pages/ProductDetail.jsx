@@ -6,7 +6,8 @@ import './ProductDetail.css';
 function ProductDetail(){
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, loading, error } = useContext(ExpenseContext);
+  const ctx = useContext(ExpenseContext);
+  const { products = [], loading = false, error = null } = ctx || {};
 
   if (loading) return <div className="loading">Loading product...</div>;
   if (error) return <div className="error">{error}</div>;

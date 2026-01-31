@@ -1,20 +1,70 @@
-# 💰 Expense Tracker App
+# 💰 Expense Tracker Application
 
-A professional, responsive web application for tracking and analyzing expenses built with React and powered by the DummyJSON API.
+A **complete, production-ready expense tracking application** built with React, Vite, and modern web technologies. Track income, expenses, manage budgets, and visualize your finances with charts and reports.
 
-## 🚀 Features
+## 🌟 Features Implemented
 
-- **Real-time Data Fetching**: Fetches product data from the DummyJSON API using Axios
-- **Expense Tracking**: Browse and manage all expenses with detailed product information
-- **Advanced Filtering**: Search expenses by name or category
-- **Smart Sorting**: Sort by price (ascending/descending), rating, or name
-- **Comprehensive Summary**: 
-  - Total expenses calculation using JavaScript `reduce()`
-  - Average expense per item
-  - Highest and lowest expenses with details
-  - Category-wise breakdown with statistics
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Professional UI/UX**: Modern interface with smooth animations and intuitive navigation
+### ✅ User Management
+- User registration with password validation
+- Secure login system
+- Logout functionality
+- Per-user data isolation
+- Session persistence
+
+### ✅ Transaction Management
+- **Add transactions**: Income and expenses
+- **Edit transactions**: Inline editing with cancellation
+- **Delete transactions**: One-click removal
+- **Categories**: 7 pre-defined categories + extensible
+- **Date selection**: Calendar date picker
+- **Descriptions**: Add notes to transactions
+- **Type support**: Income and expense tracking
+
+### ✅ Dashboard
+- Summary cards showing Total Income, Expenses, Balance, and Count
+- Budget tracking by category
+- Progress indicators with percentages
+- Overspending alerts
+
+### ✅ Financial Reports
+- Pie chart (expenses by category)
+- Bar chart (12-month trends)
+- Statistics and category breakdown
+
+### ✅ Search & Filtering
+- Real-time search (description, category, amount)
+- Filter by type and category
+- Sort options (latest, highest, lowest)
+
+### ✅ Budgeting
+- Set budget limits per category
+- Real-time tracking
+- Progress visualization
+- Overspending detection
+
+### ✅ UI/UX Features
+- Dark/Light mode toggle
+- Responsive design (mobile+desktop)
+- Professional styling
+- Icons and visual indicators
+
+### ✅ Data Management
+- CSV export
+- LocalStorage persistence
+- Per-user data isolation
+- Auto-save
+
+### ✅ Calculations Using `reduce()`
+All aggregations use JavaScript `reduce()` as specified:
+- Total income/expense
+- Category totals
+- Monthly calculations
+- Budget computations
+
+### ✅ API Integration
+- DummyJSON product integration
+- Axios HTTP client
+- Error handling
 
 ## 📋 Pages
 

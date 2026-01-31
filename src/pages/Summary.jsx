@@ -3,18 +3,32 @@ import { ExpenseContext } from '../App';
 import './Summary.css';
 
 function Summary() {
-  const { products, loading, error, calculateTotalExpense, calculateAverageExpense, getHighestExpense, getLowestExpense } = useContext(ExpenseContext);
+  const ctx = useContext(ExpenseContext);
+  
+  if (!ctx) {
+    return <div className="loading">Loading...</div>;
+  }
 
-  if (loading) return <div className="loading">Loading summary...</div>;
-  if (error) return <div className="error">{error}</div>;
+  const { 
+    products = [], 
+    loadingProducts = false, 
+    productsError = null, 
+    calculateTotalExpense, 
+    calculateAverageExpense, 
+    getHighestExpense, 
+    getLowestExpense 
+  } = ctx;
 
-  const totalExpense = calculateTotalExpense(products);
-  const averageExpense = calculateAverageExpense(products);
-  const highestExpense = getHighestExpense(products);
-  const lowestExpense = getLowestExpense(products);
+  if (loadingProducts) return <div className="loading">Loading summary...</div>;
+  if (productsError) return <div className="error">{productsError}</div>;
+
+  const totalExpense = calculateTotalExpense ? calculateTotalExpense(products) : 0;
+  const averageExpense = calculateAverageExpense ? calculateAverageExpense(products) : 0;
+  const highestExpense = getHighestExpense ? getHighestExpense(products) : null;
+  const lowestExpense = getLowestExpense ? getLowestExpense(products) : null;
 
   // Group by category
-  const categorized = products.reduce((acc, product) => {
+  const categorized = (products || []).reduce((acc, product) => {
     if (!acc[product.category]) {
       acc[product.category] = [];
     }
