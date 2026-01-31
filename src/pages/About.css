@@ -1,0 +1,128 @@
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-content {
+  line-height: 1.8;
+}
+
+.about-section {
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-section h2 {
+  color: #667eea;
+  font-size: 22px;
+  margin: 0 0 15px 0;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.about-section p {
+  color: #555;
+  font-size: 15px;
+  margin: 10px 0;
+}
+
+.features-list,
+.instructions,
+.data-list,
+.dev-practices {
+  color: #555;
+  padding-left: 25px;
+}
+
+.features-list li,
+.instructions li,
+.data-list li,
+.dev-practices li {
+  margin: 12px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.tech-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.tech-item {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.tech-item:hover {
+  transform: translateY(-3px);
+}
+
+.tech-item h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.tech-item p {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: 13px;
+}
+
+.highlight-section {
+  background: linear-gradient(135deg, #fff8f0 0%, #f0e6ff 100%);
+  border-left: 5px solid #667eea;
+}
+
+.highlight-section code {
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #667eea;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.about-footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.about-footer p {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 20px;
+  }
+
+  .about-section h2 {
+    font-size: 18px;
+  }
+
+  .tech-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .about-footer {
+    padding: 20px;
+  }
+
+  .about-footer p {
+    font-size: 16px;
+  }
+}
